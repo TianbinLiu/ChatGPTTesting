@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Website</title>
+  <style>
+    .container {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .dialog-box {
+      height: 200px;
+      margin-bottom: 10px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .user-message {
+      color: blue;
+    }
+
+    .npc-message {
+      color: green;
+    }
+
+    .input-box {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="dialog-box"></div>
+    <input type="text" class="input-box" placeholder="Type your message..." autofocus>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dialogBox = document.querySelector('.dialog-box');
+      const inputBox = document.querySelector('.input-box');
+
+      inputBox.addEventListener('keydown', async (event) => {
+        if (event.key === 'Enter' && inputBox.value.trim() !== '') {
+          const userMessage = inputBox.value.trim();
+          appendMessage(userMessage, 'user-message');
+          inputBox.value = '';
+
+          // Send user message to the server-side API
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+          });
+
+          const { npcResponse } = await response.json();
+          if (npcResponse) {
+            // Display the NPC's response
+            appendMessage(npcResponse, 'npc-message');
+          }
+        }
+      });
+
+      function appendMessage(message, className) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add(className);
+        messageElement.textContent = message;
+        dialogBox.appendChild(messageElement);
+
+        // Scroll to the bottom of the dialog box
+        dialogBox.scrollTop = dialogBox.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
