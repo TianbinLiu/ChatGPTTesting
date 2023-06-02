@@ -17,6 +17,33 @@
   <input type="text" id="user-input" placeholder="Type your message..." />
   <button id="submit-btn">Submit</button>
 
-  <script type="module" src="script.js"></script>
+<script>
+const dialogElement = document.getElementById("dialog");
+const userInputElement = document.getElementById("user-input");
+const submitButton = document.getElementById("submit-btn");
+
+let userInputArray = [];
+
+function appendUserInput(input) {
+  const userInputItem = document.createElement("div");
+  userInputItem.innerText = input;
+  dialogElement.appendChild(userInputItem);
+}
+
+function handleUserInput() {
+  const userInput = userInputElement.value;
+  userInputArray.push(userInput);
+  appendUserInput(userInput);
+  userInputElement.value = "";
+}
+
+submitButton.addEventListener("click", handleUserInput);
+userInputElement.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    handleUserInput();
+  }
+});
+
+</script>
 </body>
 </html>
