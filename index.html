@@ -1,64 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ChatGPT NPC Conversation</title>
+  <title>Dialog Box Demo</title>
   <style>
-    #chatbox {
+    #dialog {
+      height: 200px;
       width: 400px;
-      height: 300px;
-      border: 1px solid #ccc;
+      border: 1px solid black;
       overflow: auto;
       padding: 10px;
-    }
-
-    #inputbox {
-      width: 400px;
-      height: 40px;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>ChatGPT NPC Conversation</h1>
+  <div id="dialog"></div>
+  <input type="text" id="user-input" placeholder="Type your message..." />
+  <button id="submit-btn">Submit</button>
 
-  <div id="chatbox"></div>
-  <input type="text" id="inputbox" placeholder="Type your message here and press Enter">
-
-  <script>
-    const chatbox = document.getElementById('chatbox');
-    const inputbox = document.getElementById('inputbox');
-
-    async function sendUserMessage(message) {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      const { reply } = await response.json();
-      appendMessage('User', message);
-      appendMessage('NPC', reply);
-    }
-
-    function appendMessage(sender, message) {
-      const p = document.createElement('p');
-      p.textContent = `${sender}: ${message}`;
-      chatbox.appendChild(p);
-      chatbox.scrollTop = chatbox.scrollHeight;
-    }
-
-    inputbox.addEventListener('keydown', async (event) => {
-      if (event.key === 'Enter' && inputbox.value.trim() !== '') {
-        const message = inputbox.value.trim();
-        inputbox.value = '';
-        appendMessage('User', message);
-        await sendUserMessage(message);
-      }
-    });
-
-    inputbox.focus();
-  </script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
