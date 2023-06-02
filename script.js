@@ -1,7 +1,7 @@
 //tutorial: https://www.youtube.com/watch?v=4qNwoAAfnk4
 //openai documentation(python): https://platform.openai.com/docs/guides/chat
 
-import { config } from "dotenv"
+import { config } from './node_modules/dotenv/config.js';
 config()
 
 import { Configuration, OpenAIApi } from "openai"
