@@ -1,7 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
-import readline from "readline";
 
 config();
 
