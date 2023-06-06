@@ -30,11 +30,34 @@ function appendUserInput(input) {
   dialogElement.appendChild(userInputItem);
 }
 
+function appendResponse(response) {
+  const responseItem = document.createElement("div");
+  responseItem.innerText = response;
+  dialogElement.appendChild(responseItem);
+}
+
 function handleUserInput() {
   const userInput = userInputElement.value;
   userInputArray.push(userInput);
   appendUserInput(userInput);
   userInputElement.value = "";
+
+  fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      input: userInput,
+    }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      appendResponse(data.output);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
 }
 
 submitButton.addEventListener("click", handleUserInput);
