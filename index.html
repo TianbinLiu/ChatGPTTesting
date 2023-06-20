@@ -42,7 +42,7 @@ function handleUserInput() {
   appendUserInput(userInput);
   userInputElement.value = "";
 
-  fetch("/api/chat", {
+  fetch("http://3.144.248.44:3000/api/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
