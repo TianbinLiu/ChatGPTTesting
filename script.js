@@ -47,5 +47,8 @@ app.post("/api/chat", async (req, res) => {
 });
 var httpServer = http.createServer(app);
 //var httpsServer = https.createServer(credentials, app);
-httpServer.listen(3000);
+app.listen(3000,()=>{
+console.log("this should work ");
+})
+  
 //httpsServer.listen(443);
