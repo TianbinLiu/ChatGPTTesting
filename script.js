@@ -12,9 +12,11 @@ const app = express();
 
 app.use(express.json());
 const allowedOrigins = ["http://127.0.0.1:5500/", "http://127.0.0.1:5500/public/index.html"];
+/*
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/chatgpttesting.lol/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/chatgpttesting.lol/fullchain.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
+*/
 const openAi = new OpenAIApi(
   new Configuration({
     apiKey: process.env.API_KEY,
@@ -44,6 +46,6 @@ app.post("/api/chat", async (req, res) => {
   res.json({ output });
 });
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+//var httpsServer = https.createServer(credentials, app);
 httpServer.listen(3000);
-httpsServer.listen(443);
+//httpsServer.listen(443);
