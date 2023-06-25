@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
+import * as fs from 'fs';
 import cors from "cors";
 import * as http from 'http';
 import * as https from 'https';
