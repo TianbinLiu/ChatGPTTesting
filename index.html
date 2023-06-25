@@ -42,7 +42,7 @@ function handleUserInput() {
   appendUserInput(userInput);
   userInputElement.value = "";
 
-  fetch("http://3.144.248.44:3000/api/chat", {
+  fetch("https://chatgpttesting.lol/api/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
