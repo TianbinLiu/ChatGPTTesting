@@ -2,6 +2,8 @@ import express from "express";
 import { config } from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
 import cors from "cors";
+import * as http from 'http';
+import * as https from 'https';
 
 config();
 
@@ -9,7 +11,9 @@ const app = express();
 
 app.use(express.json());
 const allowedOrigins = ["http://127.0.0.1:5500/", "http://127.0.0.1:5500/public/index.html"];
-
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/chatgpttesting.lol/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/chatgpttesting.lol/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 const openAi = new OpenAIApi(
   new Configuration({
     apiKey: process.env.API_KEY,
@@ -38,7 +42,7 @@ app.post("/api/chat", async (req, res) => {
   const output = response.data.choices[0].message.content;
   res.json({ output });
 });
-
-app.listen(443, () => {
-  console.log("Server is running on port 3000");
-});
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+httpServer.listen(80);
+httpsServer.listen(443);
