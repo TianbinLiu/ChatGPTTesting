@@ -29,6 +29,11 @@ app.use(cors({
   }
 }))
 
+// Persona of a cute young female student who loves to help with CS problems
+const persona = `
+You are chatting with a cute young female student who is taking AP Computer Science. She is passionate about coding and always eager to help others with their CS problems. Her eyes light up when talking about algorithms and programming languages. Though young, her enthusiasm for technology knows no bounds, and she's excited to learn and share knowledge with you!
+`;
+
 app.get("/api/chat",(req, res) => {
   res.send("Chat API");
 });
@@ -36,14 +41,21 @@ app.get("/api/chat",(req, res) => {
 app.post("/api/chat", async (req, res) => {
   const { input } = req.body;
 
-  const response = await openAi.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: input }],
+  // Restrict AI to answer only CS-related questions
+  const prompt = persona + `\nYou asked: ${input}\n`;
+  const response = await openAi.createCompletion({
+    engine: "davinci",
+    prompt: prompt,
+    temperature: 0.7,
+    max_tokens: 150,
+    stop: ["\n"],
+    n: 1, // You can change this number based on how many responses you want.
   });
 
-  const output = response.data.choices[0].message.content;
+  const output = response.data.choices[0].text.trim();
   res.json({ output });
 });
+
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
